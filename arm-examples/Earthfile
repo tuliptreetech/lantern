@@ -1,0 +1,22 @@
+VERSION 0.7
+
+setup:
+    FROM debian:bullseye-slim
+    RUN apt-get update && apt-get install -y gcc-arm-linux-gnueabi wget unzip
+
+build-terminal-snake:
+    FROM +setup
+    RUN mkdir /build
+    RUN wget -O /build/master.zip https://github.com/tbpaolini/terminal-snake/archive/refs/heads/master.zip
+    WORKDIR /build
+    RUN unzip master.zip
+    WORKDIR /build/terminal-snake-master
+    RUN arm-linux-gnueabi-gcc -o terminal-snake -static -march=armv4 -marm src/main.c
+    SAVE ARTIFACT /build/terminal-snake-master/terminal-snake
+
+build-hello-world:
+    FROM +setup
+    COPY ./hello-world /build
+    WORKDIR /build
+    RUN arm-linux-gnueabi-gcc -o hello-world -static -march=armv4 -marm main.c
+    SAVE ARTIFACT /build/hello-world
