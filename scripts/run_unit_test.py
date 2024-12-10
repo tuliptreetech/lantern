@@ -6,7 +6,7 @@ logging.basicConfig(format='%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)
     level=logging.DEBUG)
 
 async def get_output(machine: PythonMachine, original_command: str) -> str:
-    command = original_command + "\r\n"
+    command = original_command + "\n"
     machine.send_to_broker("virtio_console_broker_0", command.encode("utf8"))
 
     lines = ""
@@ -51,7 +51,7 @@ async def run_application_under_test(machine: PythonMachine):
     logging.debug(f"{machine.get_tick_count():x}")
     machine.go()
 
-    output_from_hello = await get_output(machine, "/host/hello")
+    output_from_hello = await get_output(machine, "/host/test")
     return_code = int(await get_output(machine, "echo $?"))
 
     if return_code != 0:
@@ -64,5 +64,4 @@ async def run_application_under_test(machine: PythonMachine):
 
 if __name__ == "__main__":
     exit_code = run_application_under_test()
-    # unfortunate, the exit code is not passed back from the wrapper
-    # sys.exit(exit_code)
+    sys.exit(exit_code)
