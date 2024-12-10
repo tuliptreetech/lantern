@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+start_directory="$(pwd)"
+cd "$(dirname $0)" && root_directory="$(pwd)" && cd "$start_directory"
+share_directory="$root_directory/.share"
+
+case "$1" in
+    "test")
+        filename="$2"
+        [ "$filename" == "" ] && echo "usage: $0 test <file_to_test>" && exit 1
+
+        mkdir -p "$share_directory"
+        cp "$filename" "$share_directory/test"
+
+        cd "$root_directory"
+
+        set +e
+        id=$(docker compose ls -q | grep lantern)
+        set -e
+
+        [ "$id" == "" ] && ./server start
+
+        set +e
+        docker compose -f .docker-compose.yaml run python-unit-test
+        exit_code=$?
+        set -e
+
+        [ "$id" == "" ] && ./server stop
+        exit $exit_code
+        ;;
+    *)
+        echo "usage: $0 test <file_to_test>"
+        exit 1
+        ;;
+esac

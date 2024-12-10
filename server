@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+cd "$(dirname $0)" && root_directory="$(pwd)"
+
+case "$1" in
+    "start")
+        docker compose -f .docker-compose.yaml up server --detach --remove-orphans > /dev/null 2>&1
+        echo the lantern server has started, connect to http://localhost:10314
+        ;;
+    "stop")
+        docker compose -f .docker-compose.yaml down server > /dev/null 2>&1
+        echo the lantern server has stopped
+        ;;
+    *)
+        echo "usage: $0 start|stop"
+        exit 1
+        ;;
+esac

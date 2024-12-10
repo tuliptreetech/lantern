@@ -1,0 +1,13 @@
+services:
+  server:
+    image: ghcr.io/tuliptreetech/emerson/lantern:latest
+    ports:
+      - "10314:10314"
+    privileged: true
+    volumes:
+      - ./.share:/opt/tuliptree/emerson/projects/lantern/scratch
+  python-unit-test:
+    image: ghcr.io/tuliptreetech/emerson/emerson-python:latest
+    volumes:
+      - ./scripts:/scripts
+    command: /scripts/wait-for-it.sh -t 60 -s server:10314 -- python /scripts/run_unit_test.py
