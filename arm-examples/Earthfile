@@ -2,7 +2,7 @@ VERSION 0.7
 
 setup:
     FROM debian:bullseye-slim
-    RUN apt-get update && apt-get install -y gcc-arm-linux-gnueabi wget unzip
+    RUN apt-get update && apt-get install -y gcc-arm-linux-gnueabi wget unzip patch
 
 build-terminal-snake:
     FROM +setup
@@ -10,7 +10,9 @@ build-terminal-snake:
     RUN wget -O /build/master.zip https://github.com/tbpaolini/terminal-snake/archive/refs/heads/master.zip
     WORKDIR /build
     RUN unzip master.zip
+    COPY ./terminal-snake.patch /build
     WORKDIR /build/terminal-snake-master
+    RUN patch -u src/game_loop.c -i ../terminal-snake.patch
     RUN arm-linux-gnueabi-gcc -o terminal-snake -static -march=armv4 -marm src/main.c
     SAVE ARTIFACT /build/terminal-snake-master/terminal-snake
 

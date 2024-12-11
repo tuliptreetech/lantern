@@ -5,13 +5,13 @@ set -e
 start_directory="$(pwd)"
 cd "$(dirname $0)" && root_directory="$(pwd)" && cd "$start_directory"
 share_directory="$root_directory/.share"
+[ ! -d "$share_directory" ] && mkdir -p "$share_directory"
 
 case "$1" in
     "test")
         filename="$2"
         [ "$filename" == "" ] && echo "usage: $0 test <file_to_test>" && exit 1
 
-        mkdir -p "$share_directory"
         cp "$filename" "$share_directory/test"
 
         cd "$root_directory"

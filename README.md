@@ -33,4 +33,18 @@ If you don't have earthly, you'll need to cross compile the code yourself.
 arm-linux-gnueabi-gcc -o ./share/hello -static -march=armv4 -marm arm_examples/hello-world/main.c
 ```
 
-Through the web gui, you can interact with this example in the tty1 serial device.
+## Terminal Snake
+You can also play terminal snake!
+```
+earthly --artifact ./arm-examples+build-terminal-snake/terminal-snake `pwd`/.share/snake
+```
+
+If you don't have earthly, you'll need to apply our patch (we don't provide a size of the terminal back to the server) and cross compile the code yourself.
+```
+wget https://github.com/tbpaolini/terminal-snake/archive/refs/heads/master.zip
+unzip master.zip
+patch -u terminal-snake-master/src/game_loop.c -i ./terminal-snake.patch
+arm-linux-gnueabi-gcc -o ./share/snake -static -march=armv4 -marm terminal-snake-master/src/main.c
+```
+
+You can interact with these examples through the tty1 serial device in the web gui.
