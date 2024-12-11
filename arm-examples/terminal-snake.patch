@@ -1,0 +1,31 @@
+diff --git a/src/game_loop.c b/src/game_loop.c
+index cd57011..fd72dda 100644
+--- a/src/game_loop.c
++++ b/src/game_loop.c
+@@ -83,6 +83,8 @@ GameState* game_init(unsigned int speed)
+     // Get the amount of rows and columns that are visible on the terminal window
+     struct winsize term_size = {0};
+     LINUX_ERROR_CHECK(ioctl(STDOUT_FILENO, TIOCGWINSZ, &term_size));
++    term_size.ws_row = 25;
++    term_size.ws_col = 80;
+     state->screen_size = (GameCoord){
+         term_size.ws_row,
+         term_size.ws_col,
+@@ -105,7 +107,7 @@ GameState* game_init(unsigned int speed)
+     const size_t size_cutoff = 2 * safety_distance;
+
+     // Check if the terminal is big enough for the game
+-    if ( (state->screen_size.row <= size_cutoff) || (state->screen_size.col <= size_cutoff) )
++    /*if ( (state->screen_size.row <= size_cutoff) || (state->screen_size.col <= size_cutoff) )
+     {
+         printf_error_exit(
+             ERR_TINY_TERMINAL,
+@@ -113,7 +115,7 @@ GameState* game_init(unsigned int speed)
+             "it should be at least %zu by %zu characters.",
+             size_cutoff+1, size_cutoff+1
+         );
+-    }
++    }*/
+
+     // Top left coordinates of the board
+     const GameCoord board_start = {

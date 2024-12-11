@@ -4,6 +4,9 @@ set -e
 
 cd "$(dirname $0)" && root_directory="$(pwd)"
 
+share_directory="$root_directory/.share"
+[ ! -d "$share_directory" ] && mkdir -p "$share_directory"
+
 case "$1" in
     "start")
         docker compose -f .docker-compose.yaml up server --detach --remove-orphans > /dev/null 2>&1
