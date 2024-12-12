@@ -63,7 +63,7 @@ earthly --artifact ./arm-examples+build-hello-world-fails/hello-world-fails `pwd
 
 If you don't have earthly, you'll need to cross compile the code yourself.
 ```
-arm-linux-gnueabi-gcc -o ./.share/hello-fails -static -march=armv4 -marm arm_examples/hello-world/main-fails.c
+arm-linux-gnueabi-gcc -o ./.share/hello-fails -static -march=armv4 -marm arm_examples/hello-world-fails/main.c
 ```
 
 ### Terminal Snake
