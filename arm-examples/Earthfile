@@ -16,6 +16,13 @@ build-terminal-snake:
     RUN arm-linux-gnueabi-gcc -o terminal-snake -static -march=armv4 -marm src/main.c
     SAVE ARTIFACT /build/terminal-snake-master/terminal-snake
 
+build-hello-world-fails:
+    FROM +setup
+    COPY ./hello-world-fails /build
+    WORKDIR /build
+    RUN arm-linux-gnueabi-gcc -o hello-world-fails -static -march=armv4 -marm main.c
+    SAVE ARTIFACT /build/hello-world-fails
+
 build-hello-world:
     FROM +setup
     COPY ./hello-world /build
