@@ -6,6 +6,8 @@ services:
     privileged: true
     volumes:
       - ./.share:/opt/tuliptree/emerson/projects/lantern/scratch
+    environment:
+      license_key: ${license_key}
   python-unit-test:
     image: ghcr.io/tuliptreetech/emerson/emerson-python:latest
     volumes:
