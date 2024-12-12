@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+cd "$(dirname $0)" && root_directory="$(pwd)"
+
+echo -n "Enter your license key: "
+read license_key
+echo "license_key=$license_key" > .env
+
+docker image load -i emerson-lantern.tar
+docker image load -i emerson-python.tar
+
+echo "[+] emerson is successfully installed"

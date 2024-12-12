@@ -1,6 +1,12 @@
 # Lantern
 This is a set of project files for running the Lantern version of Emerson
 
+## Install the docker images
+Run the install script! It will prompt you for your license key.
+```
+./install
+```
+
 ## Run the server
 ```
 ./server start

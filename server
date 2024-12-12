@@ -9,12 +9,18 @@ share_directory="$root_directory/.share"
 
 case "$1" in
     "start")
-        docker compose -f .docker-compose.yaml up server --detach --remove-orphans > /dev/null 2>&1
-        echo the lantern server has started, connect to http://localhost:10314
+        docker compose -f .docker-compose.yaml up server --detach --remove-orphans
+
+        set +e
+        is_running=$(docker compose ls -q | grep lantern)
+        [ "$is_running" == "" ] && echo "[!] failed to start, make sure your license key is installed correctly" && exit 1
+        set -e
+
+        echo "[+] the lantern server has started, connect to http://localhost:10314"
         ;;
     "stop")
-        docker compose -f .docker-compose.yaml down server > /dev/null 2>&1
-        echo the lantern server has stopped
+        docker compose -f .docker-compose.yaml down server
+        echo "[+] the lantern server has stopped"
         ;;
     *)
         echo "usage: $0 start|stop"
