@@ -14,4 +14,4 @@ services:
     platform: linux/amd64
     volumes:
       - ./scripts:/scripts
-    command: /scripts/wait-for-it.sh -t 60 -s server:10314 -- python /scripts/run_unit_test.py
+    command: /scripts/wait-for-it.sh -t 60 -q -s server:10314 -- python /scripts/run_unit_test.py

@@ -3,7 +3,7 @@ import asyncio, json, sys, logging
 
 logging.basicConfig(format='%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
     datefmt='%Y-%m-%d:%H:%M:%S',
-    level=logging.DEBUG)
+    level=logging.WARNING)
 
 async def get_output(machine: PythonMachine, original_command: str) -> str:
     command = original_command + "\n"
@@ -44,22 +44,15 @@ async def get_output(machine: PythonMachine, original_command: str) -> str:
     return lines
 
 
-@script.run(host="server", port=10314, project_name="lantern")
+@script.run_quietly(host="server", port=10314, project_name="lantern")
 async def run_application_under_test(machine: PythonMachine):
-    logging.debug(f"{machine.get_tick_count():x}")
     machine.load_snapshot_from_data_store("booted")
-    logging.debug(f"{machine.get_tick_count():x}")
     machine.go()
 
     output_from_hello = await get_output(machine, "/host/test")
     return_code = int(await get_output(machine, "echo $?"))
 
-    if return_code != 0:
-        print("command failed:")
-        print(output_from_hello, end='')
-    else:
-        print("command passed!")
-        print(output_from_hello, end='')
+    print(output_from_hello.replace("\r\n", "\n").replace("\r", ""))
     return return_code
 
 if __name__ == "__main__":
