@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e
+
+start_directory="$(pwd)"
+root_directory="$HOME/.emerson"
+[ ! -d "$root_directory" ] && echo "emerson directory ($root_directory) is missing, did you install correctly?" && exit 1
+
+share_directory="$root_directory/share"
+[ ! -d "$share_directory" ] && mkdir -p "$share_directory"
+
+case "$1" in
+    "start")
+        cd "$root_directory"
+        docker compose up server --detach --remove-orphans
+        echo "[+] the emerson server has started, connect to http://localhost:10314"
+        ;;
+
+    "stop")
+        cd "$root_directory"
+        docker compose down server
+        echo "[+] the emerson server has stopped"
+        ;;
+
+    "test")
+        filename="$2"
+        [ "$filename" == "" ] && echo "usage: emerson start|stop|[test <file_to_test>]" && exit 2
+
+        cp "$filename" "$share_directory/test"
+
+        cd "$root_directory"
+
+        set +e
+        id=$(docker compose ls -q | grep lantern)
+        set -e
+
+        [ "$id" == "" ] && docker compose up server --detach --remove-orphans
+
+        set +e
+        docker compose run python-unit-test
+        exit_code=$?
+        set -e
+
+        [ "$id" == "" ] && docker compose down server
+        exit $exit_code
+        ;;
+
+    *)
+        echo "usage: emerson start|stop|[test <file_to_test>]"
+        exit 3
+        ;;
+esac

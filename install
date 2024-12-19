@@ -2,13 +2,36 @@
 
 set -e
 
+if [ "$EUID" -eq 0 ]; then
+    echo "[+] running as root, installing emerson in /usr/bin, not installing the necessary files for a user for the docker images"
+    cp "$root_directory/emerson" /usr/local/bin/emerson
+    exit
+fi
+
+echo "[+] running not as root"
+echo "[+] installing necessary files for this user in ~/.emerson"
+echo "[+] if you want to install emerson at the system level, run sudo $0"
+
 cd "$(dirname $0)" && root_directory="$(pwd)"
 
-echo -n "Enter your license key: "
-read license_key
-echo "license_key=$license_key" > .env
+mkdir -p ~/.emerson/share
+mkdir -p ~/.emerson/scripts
 
-docker image load -i emerson-lantern.tar
-docker image load -i emerson-python.tar
+if [ ! -e "$HOME/.emerson/.env" ]; then
+    echo -n "Enter your license key: "
+    read license_key
+    echo "license_key=$license_key" > "$HOME/.emerson/.env"
+fi
+
+cp "$root_directory/emerson" "$HOME/.emerson"
+cp "$root_directory/share/hello" "$HOME/.emerson/share"
+cp "$root_directory/share/hello-fails" "$HOME/.emerson/share"
+cp "$root_directory/share/snake" "$HOME/.emerson/share"
+cp "$root_directory/docker-compose.yaml" "$HOME/.emerson/docker-compose.yaml"
+cp "$root_directory/scripts/wait-for-it.sh" "$HOME/.emerson/scripts/wait-for-it.sh"
+cp "$root_directory/scripts/run_unit_test.py" "$HOME/.emerson/scripts/run_unit_test.py"
+
+docker image load -i "$root_directory/emerson-lantern.tar"
+docker image load -i "$root_directory/emerson-python.tar"
 
 echo "[+] emerson is successfully installed"
