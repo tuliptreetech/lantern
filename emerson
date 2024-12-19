@@ -34,14 +34,14 @@ case "$1" in
         id=$(docker compose ls -q | grep lantern)
         set -e
 
-        [ "$id" == "" ] && docker compose up server --detach --remove-orphans
+        [ "$id" == "" ] && docker compose up server --detach --remove-orphans > /dev/null 2>&1
 
         set +e
-        docker compose run python-unit-test
+        docker compose run --quiet-pull python-unit-test
         exit_code=$?
         set -e
 
-        [ "$id" == "" ] && docker compose down server
+        [ "$id" == "" ] && docker compose down server > /dev/null 2>&1
         exit $exit_code
         ;;
 
