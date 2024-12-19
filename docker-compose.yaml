@@ -4,12 +4,14 @@ services:
     ports:
       - "10314:10314"
     privileged: true
+    platform: linux/amd64
     volumes:
-      - ./.share:/opt/tuliptree/emerson/projects/lantern/scratch
+      - ./share:/opt/tuliptree/emerson/projects/lantern/scratch
     environment:
       license_key: ${license_key}
   python-unit-test:
     image: ghcr.io/tuliptreetech/emerson/emerson-python:latest
+    platform: linux/amd64
     volumes:
       - ./scripts:/scripts
     command: /scripts/wait-for-it.sh -t 60 -s server:10314 -- python /scripts/run_unit_test.py
