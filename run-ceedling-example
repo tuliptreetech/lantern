@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cd "$(dirname $0)" && root_directory="$(pwd)"
+
+[ ! $(which arm-linux-gnueabi-gcc) ] && echo "[+] installing arm cross compiler" && sudo apt update && apt install gcc-arm-linux-gnueabi
+
+[ ! $(which ceedling) ] && echo "[+] installing ceedling"  && gem install ceedling
+
+set -e
+[ ! -e master.zip ] && echo "[+] getting the test_ceedling_example repository" && wget https://github.com/ThrowTheSwitch/Ceedling/archive/refs/heads/master.zip
+[ ! -d Ceedling-master ] && echo "[+] extracting" && unzip master.zip
+
+echo "[+] copying our project file over the example one"
+cp -rpv ceedling-example/project.yml Ceedling-master/examples/temp_sensor
+
+echo "[+] running ceedling!"
+cd Ceedling-master/examples/temp_sensor
+ceedling test:all
