@@ -2,18 +2,14 @@
 
 set -e
 
-if [ "$EUID" -eq 0 ]; then
-    echo "[+] running as root, installing emerson in /usr/bin, not installing the necessary files for a user for the docker images"
-    cp "$root_directory/emerson" /usr/local/bin/emerson
-    exit
-fi
-
-echo "[+] running not as root"
-echo "[+] installing necessary files for this user in ~/.emerson"
-echo "[+] if you want to install emerson at the system level, run sudo $0"
-
 cd "$(dirname $0)" && root_directory="$(pwd)"
 
+set +e
+echo "[+] installing the emerson control script as root in /usr/local/bin"
+sudo cp "$root_directory/emerson" /usr/local/bin/emerson
+set -e
+
+echo "[+] installing necessary files for this user in ~/.emerson"
 mkdir -p ~/.emerson/share
 mkdir -p ~/.emerson/scripts
 
