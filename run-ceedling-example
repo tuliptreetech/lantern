@@ -2,7 +2,7 @@
 
 cd "$(dirname $0)" && root_directory="$(pwd)"
 
-[ ! $(which arm-linux-gnueabi-gcc) ] && echo "[+] installing arm cross compiler" && sudo apt update && apt install gcc-arm-linux-gnueabi
+[ ! $(which arm-linux-gnueabi-gcc) ] && echo "[+] installing arm cross compiler" && sudo apt update && sudo apt install gcc-arm-linux-gnueabi
 
 [ ! $(which ceedling) ] && echo "[+] installing ceedling"  && gem install ceedling
 
