@@ -9,6 +9,9 @@ root_directory="$HOME/.emerson"
 share_directory="$root_directory/share"
 [ ! -d "$share_directory" ] && mkdir -p "$share_directory"
 
+arduino_directory="$root_directory/arduino"
+[ ! -d "$arduino_directory" ] && mkdir -p "$arduino_directory"
+
 case "$1" in
     "start")
         cd "$root_directory"
@@ -44,7 +47,28 @@ case "$1" in
         [ "$id" == "" ] && docker compose down server > /dev/null 2>&1
         exit $exit_code
         ;;
+    "run")
+        project="$2"
+        [ "$project" == "" ] && echo "usage: emerson start|stop|[test <file_to_test>]|run <arduino_project>" && exit 2
 
+        cp "${HOME}/Documents/Arduino/$project/build/arduino.avr.uno/$project.ino.with_bootloader.bin" "$arduino_directory/flash.bin"
+
+        cd "$root_directory"
+
+        set +e
+        id=$(docker compose ls -q | grep lantern)
+        set -e
+
+        [ "$id" == "" ] && docker compose up server --detach --remove-orphans > /dev/null 2>&1
+        ;;
+    "stop")
+        set +e
+        id=$(docker compose ls -q | grep lantern)
+        set -e
+
+        [ "$id" == "" ] && docker compose down server > /dev/null 2>&1
+        exit $exit_code
+        ;;
     *)
         echo "usage: emerson start|stop|[test <file_to_test>]"
         exit 3

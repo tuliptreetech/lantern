@@ -44,7 +44,7 @@ async def get_output(machine: PythonMachine, original_command: str) -> str:
     return lines
 
 
-@script.run_quietly(host="server", port=10314, project_name="lantern")
+@script.run_quietly(host="server", port=10314, project_name="armv5-virtio")
 async def run_application_under_test(machine: PythonMachine):
     machine.load_snapshot_from_data_store("booted")
     machine.go()
