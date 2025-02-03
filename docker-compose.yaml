@@ -6,7 +6,8 @@ services:
     privileged: true
     platform: linux/amd64
     volumes:
-      - ./share:/opt/tuliptree/emerson/projects/lantern/scratch
+      - ./share:/opt/tuliptree/emerson/projects/armv5-virtio/scratch
+      - ./arduino/flash.bin:/opt/tuliptree/emerson/projects/arduino-uno-r3/flash.bin
     environment:
       license_key: ${license_key}
   python-unit-test:
