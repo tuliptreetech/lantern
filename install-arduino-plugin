@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+cd "$(dirname $0)" && root_directory="$(pwd)"
+
+rm -rf "${HOME}/.arduinoIDE/plugins/emerson"
+mkdir -p "${HOME}/.arduinoIDE/plugins"
+unzip -d "${HOME}/.arduinoIDE/plugins/" "$root_directory/emerson_arduino.zip"
