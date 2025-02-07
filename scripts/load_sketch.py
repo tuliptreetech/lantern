@@ -10,3 +10,4 @@ if __name__ == "__main__":
         project_name = "arduino-uno-r3"
         session_id = "arduino-ide-session"
         connection.run_session(project_name, session_id)
+        connection.enable_gdb(project_name, session_id)

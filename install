@@ -26,6 +26,8 @@ cp "$root_directory/share/snake" "$HOME/.emerson/share"
 cp "$root_directory/docker-compose.yaml" "$HOME/.emerson/docker-compose.yaml"
 cp "$root_directory/scripts/wait-for-it.sh" "$HOME/.emerson/scripts/wait-for-it.sh"
 cp "$root_directory/scripts/run_unit_test.py" "$HOME/.emerson/scripts/run_unit_test.py"
+cp "$root_directory/scripts/load_sketch.py" "$HOME/.emerson/scripts/load_sketch.py"
+cp "$root_directory/scripts/reload_sketch.py" "$HOME/.emerson/scripts/reload_sketch.py"
 
 docker image load -i "$root_directory/emerson-lantern.tar"
 docker image load -i "$root_directory/emerson-python.tar"
