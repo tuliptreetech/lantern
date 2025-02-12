@@ -29,7 +29,13 @@ cp "$root_directory/scripts/run_unit_test.py" "$HOME/.emerson/scripts/run_unit_t
 cp "$root_directory/scripts/load_sketch.py" "$HOME/.emerson/scripts/load_sketch.py"
 cp "$root_directory/scripts/reload_sketch.py" "$HOME/.emerson/scripts/reload_sketch.py"
 
+echo "[+] loading the docker images"
 docker image load -i "$root_directory/emerson-lantern.tar"
 docker image load -i "$root_directory/emerson-python.tar"
+
+echo "[+] installing the arduino plugin"
+rm -rf "${HOME}/.arduinoIDE/plugins/emerson"
+mkdir -p "${HOME}/.arduinoIDE/plugins"
+unzip -d "${HOME}/.arduinoIDE/plugins/" "$root_directory/emerson-arduino.zip"
 
 echo "[+] emerson is successfully installed"
